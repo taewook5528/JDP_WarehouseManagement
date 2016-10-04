@@ -34,7 +34,7 @@ public class storeGUI extends JFrame {
 	}
 
 	/**
-	 * Create the frame.asdf
+	 * Create the frame.
 	 */
 	public storeGUI() {
 		setTitle("Store Management");
