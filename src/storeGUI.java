@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 public class storeGUI extends JFrame {
-
 	private JPanel contentPane;
 	private JTable stockTable, transTable;
 	private JScrollPane stockScroll, transScroll;
@@ -32,7 +31,6 @@ public class storeGUI extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 */
