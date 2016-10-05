@@ -84,9 +84,9 @@ public class warehouseGUI extends JFrame {
 		stockPanel.add(btnModifyMaxMin);
 
 		// 주문관리 탭 패널
-		sendPanel = new JPanel();
-		tabbedPane.addTab("주문관리", null, sendPanel, null);
-		sendPanel.setLayout(null);
+		transPanel = new JPanel();
+		tabbedPane.addTab("주문관리", null, transPanel, null);
+		transPanel.setLayout(null);
 
 		String[] transColumnNames = { "창고명", "물품명", "운송량", "운송비", "발송여부" };
 		Object[][] transData = { { "A창고", "A", new Integer(50), new Integer(30000), new Boolean(false) } };
@@ -98,16 +98,21 @@ public class warehouseGUI extends JFrame {
 		};
 
 		transScroll = new JScrollPane(transTable);
-		transScroll.setBounds(12, 10, 596, 273);
-		sendPanel.add(transScroll);
+		transScroll.setBounds(12, 42, 596, 241);
+		transPanel.add(transScroll);
 
 		JButton btnReceived = new JButton("수령완료");
 		btnReceived.setBounds(486, 294, 122, 23);
-		sendPanel.add(btnReceived);
+		transPanel.add(btnReceived);
+		
+		JButton btnNew_w = new JButton("새로 주문하기");
+		btnNew_w.setSize(140, 23);
+		btnNew_w.setLocation(12, 10);
+		transPanel.add(btnNew_w);
 
 		JButton btnCancle = new JButton("주문취소");
 		btnCancle.setBounds(164, 10, 114, 23);
-		sendPanel.add(btnCancle);
+		transPanel.add(btnCancle);
 
 		// 운송관리 탭 패널
 		sendPanel = new JPanel();
@@ -124,7 +129,7 @@ public class warehouseGUI extends JFrame {
 		};
 
 		sendScroll = new JScrollPane(sendTable);
-		sendScroll.setBounds(12, 46, 596, 238);
+		sendScroll.setBounds(12, 10, 596, 274);
 		sendPanel.add(sendScroll);
 
 		JButton btnReceived_w = new JButton("수령완료");
@@ -133,10 +138,7 @@ public class warehouseGUI extends JFrame {
 		btnReceived.setBounds(486, 294, 122, 23);
 		sendPanel.add(btnReceived_w);
 
-		JButton btnNew_w = new JButton("새로 주문하기");
-		btnNew_w.setSize(140, 23);
-		btnNew_w.setLocation(12, 10);
-		sendPanel.add(btnNew_w);
+		
 
 		JButton btnSended = new JButton("발송완료");
 		btnSended.setSize(114, 23);
