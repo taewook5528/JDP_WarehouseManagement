@@ -1,9 +1,0 @@
-diff a/src/storeGUI.java b/src/storeGUI.java	(rejected hunks)
-@@ -34,6 +34,7 @@
- 	}
- 
- 	/**
-+	 * Create the frame.asdf
- 	 */
- 	public storeGUI() {
- 		setTitle("Store Management");
