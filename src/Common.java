@@ -13,7 +13,7 @@ public class Common { //창고, 가게의 공통 상위클래스
 		private int min; // 최소 유지재고량
 		/* 필드 종료 */
 
-		Stock(String name, int remain, int max, int min) { // Stock 생성자
+		public Stock(String name, int remain, int max, int min) { // Stock 생성자
 			this.name = name;
 			this.remain = remain;
 			this.max = max;
@@ -43,7 +43,7 @@ public class Common { //창고, 가게의 공통 상위클래스
 		private boolean isReceived; //수령여부
 		/* 필드 종료 */
 		
-		Order(String warename, String name, int quantity, int cost, boolean issent) {
+		public Order(String warename, String name, int quantity, int cost, boolean issent) {
 			this.warehouseName = warename;
 			this.name = name;
 			this.quantity = quantity;
