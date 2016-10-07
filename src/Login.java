@@ -18,33 +18,33 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class Login extends JFrame implements ActionListener {
-	private class Account { // 계정 클래스
-		private String id;
-		private String pw;
-
-		public Account(String id, String pw) {
-			this.id = id;
-			this.pw = pw;
-		}
-
-		public String getId() {
-			return id;
-		}
-
-		public String getPw() {
-			return pw;
-		}
-	}
+//	private class Account { // 계정 클래스
+//		private String id;
+//		private String pw;
+//
+//		public Account(String id, String pw) {
+//			this.id = id;
+//			this.pw = pw;
+//		}
+//
+//		public String getId() {
+//			return id;
+//		}
+//
+//		public String getPw() {
+//			return pw;
+//		}
+//	}
 
 	private JPanel contentPane;
 	private JTextField idField;
 	private JPasswordField passwordField;
-	private JButton btnNewButton;
+	private JButton btnProceed;
 	private JLabel lblUserAuthorisationRequired;
-	private boolean isFileExist;
-	private String inputId;
+	// private boolean isFileExist; //파일이 존재하는지 여부
+	private String inputId; // 사용자가 입력한 id, pw
 	private String inputPw;
-	private String tmpId;
+	private String tmpId; // 임시 id, pw 저장
 	private String tmpPw;
 	private BufferedReader in;
 
@@ -93,10 +93,10 @@ public class Login extends JFrame implements ActionListener {
 		contentPane.add(idField);
 		idField.setColumns(10);
 
-		btnNewButton = new JButton("Proceed");
-		btnNewButton.setBounds(92, 123, 89, 23);
-		btnNewButton.addActionListener(this);
-		contentPane.add(btnNewButton);
+		btnProceed = new JButton("Proceed");
+		btnProceed.setBounds(92, 123, 89, 23);
+		btnProceed.addActionListener(this);
+		contentPane.add(btnProceed);
 
 		lblUserAuthorisationRequired = new JLabel("User authorisation required");
 		lblUserAuthorisationRequired.setFont(new Font("굴림", Font.PLAIN, 16));
@@ -108,10 +108,9 @@ public class Login extends JFrame implements ActionListener {
 		contentPane.add(passwordField);
 
 		try {
-			in = new BufferedReader(new FileReader("list.txt")); // 명단 리스트 파일
-																	// 입력용 객체
+			in = new BufferedReader(new FileReader("list.txt")); // 명단 리스트 파일 입력용 객체
 
-		} catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e1) { // 파일이 없으면 에러 메시지 출력
 			e1.printStackTrace();
 			JFrame ef = new JFrame("Error");
 			ef.setVisible(true);
@@ -127,24 +126,26 @@ public class Login extends JFrame implements ActionListener {
 
 	}
 
-	@SuppressWarnings("deprecation") // 보안 무시
+	@SuppressWarnings("deprecation") // 보안같은건 무시합니다
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnNewButton) {
+		if (e.getSource() == btnProceed) {
 			inputId = idField.getText();
 			inputPw = passwordField.getText();
 			try {
 				while (in.ready()) {
 					tmpId = in.readLine();
 					tmpPw = in.readLine();
-					Account tmp = new Account(tmpId, tmpPw);
-					if (inputId == tmpId && inputPw == tmpPw) {
-						if (inputId == "admin") {
+					if (inputId.equals(tmpId) && inputPw.equals(tmpPw)) {
+						if (inputId.equals("admin")) {
 							// 헤드 GUI 생성 & 로그인 GUI 닫기
+							this.dispose();
 						} else if (inputId.charAt(0) == '1') {
 							// 창고GUI 생성
+							this.dispose();
 						} else if (inputId.charAt(0) == '2') {
 							// 가게GUI 생성
+							this.dispose();
 						}
 					}
 				}
