@@ -119,8 +119,8 @@ public class warehouseGUI extends JFrame {
 		tabbedPane.addTab("운송관리", null, sendPanel, null);
 		sendPanel.setLayout(null);
 
-		String[] sendColumnNames = { "가게명", "물품명", "운송량", "수령여부" };
-		Object[][] sendData = { { "A가게", "A", new Integer(50), new Boolean(false) } };
+		String[] sendColumnNames = { "가게명", "x", "y", "물품명", "운송량" };
+		Object[][] sendData = { { "A가게", "92.5", "45.0", "A", new Integer(50)} };
 		sendTable = new JTable(sendData, sendColumnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -131,18 +131,13 @@ public class warehouseGUI extends JFrame {
 		sendScroll = new JScrollPane(sendTable);
 		sendScroll.setBounds(12, 10, 596, 274);
 		sendPanel.add(sendScroll);
-
-		JButton btnReceived_w = new JButton("수령완료");
-		btnReceived_w.setSize(122, 23);
-		btnReceived_w.setLocation(486, 294);
 		btnReceived.setBounds(486, 294, 122, 23);
-		sendPanel.add(btnReceived_w);
 
 		
 
 		JButton btnSended = new JButton("발송완료");
 		btnSended.setSize(114, 23);
-		btnSended.setLocation(360, 294);
+		btnSended.setLocation(494, 294);
 		btnCancle.setBounds(360, 294, 114, 23);
 		sendPanel.add(btnSended);
 	}
