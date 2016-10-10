@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 
-public class Common { //창고, 가게의 공통 상위클래스
-	private double x, y; // 좌표
-	private String keyNumber; // 고유 넘버
-	private String name;
-
+public class Store { //창고, 가게의 공통 상위클래스
 	// 내부 재고 클래스
 	private class Stock {
 		private String name;
@@ -40,19 +36,36 @@ public class Common { //창고, 가게의 공통 상위클래스
 		private int quantity; //운송량
 		private int cost; //운송비
 		private boolean isSent; //발송여부 
-		private boolean isReceived; //수령여부
+		//private boolean isReceived; //수령여부
 		/* 필드 종료 */
 		
-		public Order(String warename, String name, int quantity, int cost, boolean issent) {
+		public void setSent(boolean isSent) { //발송여부 수정
+			this.isSent = isSent;
+		}
+
+		public Order(String warename, String name, int quantity, int cost, boolean issent) { //Order 생성자
 			this.warehouseName = warename;
 			this.name = name;
 			this.quantity = quantity;
 			this.cost = cost;
 			this.isSent = false;
-			this.isReceived = false;
+			//this.isReceived = false;
 		}
 	}
-
+	
+	private double x, y; // 좌표
+	private String id; // 고유 넘버
+	private String password;
+	private String name;
 	private ArrayList<Stock> stocks = new ArrayList<Stock>(); //재고 어레이리스트
-	private ArrayList<Order> orders = new ArrayList<Order>();
+	private ArrayList<Order> orders = new ArrayList<Order>(); //주문 어레이리스트
+	
+	public Store(double x, double y, String id, String password, String name) { //Store 생성자
+		this.x = x;
+		this.y = y;
+		this.id = id;
+		this.password = password;
+		this.name = name;
+	}
+	
 }
