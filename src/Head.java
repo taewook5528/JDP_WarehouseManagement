@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.ArrayList;///////
 
 public class Head {
 	//내부 주문 접수 클래스
