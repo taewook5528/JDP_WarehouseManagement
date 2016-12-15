@@ -1,3 +1,12 @@
+/*
+ *filename : Login.java
+ *author : team Tic Toc
+ *since : 2016.10.07
+ *purpose/function : WMS¿¡ Á¢¼ÓÇÒ ¼ö ÀÖ´Â ´ë»óÀº Å©°Ô 3°¡Áö·Î ³ª´· ¼ö ÀÖ´Ù. Head client, warehouse client, store clientÀÌ´Ù.
+ *					°¢ ´ë»óÀº ±ÇÇÑÀÌ ÀÖ´Â ID¿Í password·Î ·Î±×ÀÎÇÏ°í ½Ã½ºÅÛ¿¡ Á¢¼Ó ÇÒ ¼ö ÀÖ´Ù. ÀÌ ÄÚµåÀÇ ¸ñÀûÀº ·Î±×ÀÎ GUI¸¦ »ç¿ëÀÚ¿¡°Ô º¸¿©ÁÖ°í
+ *					ÀÔ·Â¹ŞÀº ID¿Í password¸¦ ¹ÙÅÁÀ¸·Î µ¥ÀÌÅÍº£ÀÌ½º¿¡ ÀúÀåµÈ identification Å×ÀÌºí¿¡ ÀúÀåµÈ Á¤º¸¿Í ÀÏÄ¡¿©ºÎ¸¦ ÆÇ´ÜÇÑ´Ù. 
+ *					±× ÈÄ, °¢ ´ë»ó¿¡ ¸Â´Â GUI È­¸éÀ» Ãâ·ÂÇØ¼­ º¸¿©ÁØ´Ù.
+ */
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -6,58 +15,65 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+/*Define Login class to offer login GUI and to connect WMS*/
 public class Login extends JFrame implements ActionListener {
-	// private class Account { // ê³„ì • í´ë˜ìŠ¤
-	// private String id;
-	// private String pw;
-	//
-	// public Account(String id, String pw) {
-	// this.id = id;
-	// this.pw = pw;
-	// }
-	//
-	// public String getId() {
-	// return id;
-	// }
-	//
-	// public String getPw() {
-	// return pw;
-	// }
-	// }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7921901733199665301L;
 
 	private JPanel contentPane;
 	private JTextField idField;
 	private JPasswordField passwordField;
 	private JButton btnProceed;
 	private JLabel lblUserAuthorisationRequired;
-	// private boolean isFileExist; //íŒŒì¼ì´ ì¡´ì¬í•˜ëŠ”ì§€ ì—¬ë¶€
-	private String inputId; // ì‚¬ìš©ìê°€ ì…ë ¥í•œ id, pw
+	private String inputId; // id and pw(user inserted)
 	private String inputPw;
-	private String tmpId; // ì„ì‹œ id, pw ì €ì¥
+	private String tmpId; // temporarily save id and pw
 	private String tmpPw;
 	private BufferedReader in;
+	private ResultSet rs;
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @throws SQLException
 	 */
 
-	public static void main(String[] args) {
-		String[] values = {"A", "B"};
-		Object selected = JOptionPane.showInputDialog(null, "Select item to edit", "maximum / minimum inventory edit", JOptionPane.DEFAULT_OPTION, null, values, "0");
-		EventQueue.invokeLater(new Runnable() { //ë¡œê·¸ì¸ í”„ë ˆì„ ìƒì„±
+	public static void main(String[] args) throws SQLException {
+		DataBaseConnect.connect("1234");
+		DataBaseConnect.execute("use wms");
+		
+		//insert distance;
+//		try {
+//			Head.calculateNewStore("2001");
+//			Head.calculateNewStore("2002");
+//			Head.calculateNewStore("2003");
+//			Head.calculateNewStore("2004");
+//			Head.calculateNewStore("2005");
+//			Head.calculateNewStore("2006");
+//			Head.calculateNewStore("2007");
+//			Head.calculateNewStore("2008");
+//			Head.calculateNewStore("2009");
+//			Head.calculateNewStore("2010");
+//			Head.calculateNewStore("2011");
+//			Head.calculateNewStore("2012");
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+		
+		EventQueue.invokeLater(new Runnable() { // create login frame
 			public void run() {
 				try {
 					Login frame = new Login();
@@ -72,9 +88,10 @@ public class Login extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
+	/*constructor of Login class*/
 	public Login() {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
@@ -110,77 +127,58 @@ public class Login extends JFrame implements ActionListener {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(106, 92, 142, 21);
 		contentPane.add(passwordField);
-
-		try {
-			in = new BufferedReader(new FileReader("list.txt")); // ëª…ë‹¨ ë¦¬ìŠ¤íŠ¸ íŒŒì¼
-																	// ì…ë ¥ìš© ê°ì²´
-
-		} catch (FileNotFoundException e1) { // íŒŒì¼ì´ ì—†ìœ¼ë©´ ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥
-			e1.printStackTrace();
-			JFrame ef = new JFrame("Error");
-			ef.setVisible(true);
-			ef.setSize(250, 100);
-			ef.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-			ef.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			ef.getContentPane().setLayout(null);
-			JLabel errorMessage = new JLabel("Cannot find the file");
-			errorMessage.setBounds(30, 10, 200, 50);
-			ef.getContentPane().add(errorMessage);
-		}
-		;
-
 	}
 
-	@SuppressWarnings("deprecation") // ë³´ì•ˆê°™ì€ê±´ ë¬´ì‹œí•©ë‹ˆë‹¤
+	@SuppressWarnings("deprecation")
 	@Override
+	/*'Proceed' Button event handler method*/
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnProceed) {
-			inputId = idField.getText();
-			inputPw = passwordField.getText();
-			try {
-				while (in.ready()) {
-					tmpId = in.readLine();
-					tmpPw = in.readLine();
-					if (inputId.equals(tmpId) && inputPw.equals(tmpPw)) {
-						if (inputId.equals("admin")) {
-							// í—¤ë“œ GUI ìƒì„± & ë¡œê·¸ì¸ GUI ë‹«ê¸°
-							this.dispose();
-							try {
-								new Head();
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-						} else if (inputId.charAt(0) == '1') {
-							// ì°½ê³ GUI ìƒì„±
-							try {
-								new Warehouse(inputId, inputPw, 1);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-							this.dispose();
-						} else if (inputId.charAt(0) == '2') {
-							// ê°€ê²ŒGUI ìƒì„±
-							try {
-								new Store(inputId, inputPw, 2);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-							this.dispose();
-						} else if (inputId.equals("server")) {
-							this.dispose();
-							try {
-								new Server(); //ì„œë²„ í˜¸ìŠ¤íŠ¸
-							} catch (Exception e1) {
-								e1.printStackTrace();
-								System.out.println("Server has already been hosted or has error.");
-							}
+		inputId = idField.getText();
+		inputPw = passwordField.getText();
+		try {
+			rs = DataBaseConnect.execute("select * from identification");//read data from identification table saved in database
+			while (rs.next()) {
+				tmpId = rs.getString(1);
+				tmpPw = rs.getString(2);
+				if (inputId.equals(tmpId) && inputPw.equals(tmpPw)) {//compare value
+					if (inputId.equals("admin")) {
+						// create head GUI & close login GUI
+						this.dispose();
+						try {
+							new Head();
+						} catch (Exception e1) {
+							e1.printStackTrace();
 						}
+					} else if (inputId.equals("server")) {
+						this.dispose();
+						try {
+							new Server(); // server host
+						} catch (Exception e1) {
+							e1.printStackTrace();
+							System.out.println("Server has already been hosted or has error.");
+						}
+					} else if (!rs.getBoolean("isStore")) {
+						// create warehouse GUI
+						try {
+							new Warehouse(inputId, inputPw, 1);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						this.dispose();
+					} else if (rs.getBoolean("isStore")) {
+						// create store GUI
+						try {
+							new Store(inputId, inputPw, 2);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+						this.dispose();
 					}
 				}
-				lblUserAuthorisationRequired.setText("Invalid ID");
-			} catch (IOException e2) {
-				e2.printStackTrace();
 			}
+			lblUserAuthorisationRequired.setText("Invalid ID");//If there is no data which correspond the id and password user input in database
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 }
